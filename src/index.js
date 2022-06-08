@@ -2,6 +2,7 @@ import './css/main.scss';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, set, onValue, get } from 'firebase/database';
+import firebase from 'firebase/compat/app';
 import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 // TODO: Add SDKs for Firebase products that you want to use
