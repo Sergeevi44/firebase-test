@@ -27,23 +27,15 @@ const firebaseConfig = {
   appId: '1:1000137961183:web:a6ceb146b1a5991749c36a',
 };
 
-// Initialize Firebase
-// console.log(app);
-// console.log(db);
+const app = initializeApp(firebaseConfig);
+// const db = getDatabase(app);
 
 refs.submitBtn.addEventListener('click', onSubmitBtnClick);
 
-// function writeData(id, name, pass, movies) {
-//   const app = initializeApp(firebaseConfig);
-//   const db = getDatabase(app);
+// function writeData(info) {
 //   const userData = ref(db, `User${id}Info`);
 
-//   set(userData, {
-//     userid: id,
-//     username: name,
-//     password: pass,
-//     movies,
-//   });
+//   set(userData, info);
 //   onValue(userData, snapshot => {
 //     const data = snapshot.val();
 //     console.log(data);
@@ -56,9 +48,7 @@ function onSubmitBtnClick(e) {
   //   const pass = refs.pass.value;
   //   const id = 1;
   //   const movies = [1, 2, 3, 4, 5];
-  //   writeData(id, name, pass, movies);
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
   signInWithPopup(auth, provider)
@@ -70,7 +60,6 @@ function onSubmitBtnClick(e) {
       // The signed-in user info.
       const user = result.user;
       console.log(user);
-      // ...
     })
     .catch(error => {
       // Handle Errors here.
@@ -80,6 +69,5 @@ function onSubmitBtnClick(e) {
       const email = error.customData.email;
       // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
     });
 }
