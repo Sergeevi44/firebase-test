@@ -2,9 +2,10 @@ import './css/main.scss';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, set, onValue, get } from 'firebase/database';
-import firebase from 'firebase/compat/app';
-import * as firebaseui from 'firebaseui';
-import 'firebaseui/dist/firebaseui.css';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+// import firebase from 'firebase/compat/app';
+// import * as firebaseui from 'firebaseui';
+// import 'firebaseui/dist/firebaseui.css';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -32,28 +33,53 @@ const firebaseConfig = {
 
 refs.submitBtn.addEventListener('click', onSubmitBtnClick);
 
-function writeData(id, name, pass, movies) {
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const userData = ref(db, `User${id}Info`);
+// function writeData(id, name, pass, movies) {
+//   const app = initializeApp(firebaseConfig);
+//   const db = getDatabase(app);
+//   const userData = ref(db, `User${id}Info`);
 
-  set(userData, {
-    userid: id,
-    username: name,
-    password: pass,
-    movies,
-  });
-  onValue(userData, snapshot => {
-    const data = snapshot.val();
-    console.log(data);
-  });
-}
+//   set(userData, {
+//     userid: id,
+//     username: name,
+//     password: pass,
+//     movies,
+//   });
+//   onValue(userData, snapshot => {
+//     const data = snapshot.val();
+//     console.log(data);
+//   });
+// }
 
 function onSubmitBtnClick(e) {
   e.preventDefault();
-  const name = refs.name.value;
-  const pass = refs.pass.value;
-  const id = 1;
-  const movies = [1, 2, 3, 4, 5];
-  writeData(id, name, pass, movies);
+  //   const name = refs.name.value;
+  //   const pass = refs.pass.value;
+  //   const id = 1;
+  //   const movies = [1, 2, 3, 4, 5];
+  //   writeData(id, name, pass, movies);
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth();
+  signInWithPopup(auth, provider)
+    .then(result => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      console.log(token);
+      // The signed-in user info.
+      const user = result.user;
+      console.log(user);
+      // ...
+    })
+    .catch(error => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    });
 }
